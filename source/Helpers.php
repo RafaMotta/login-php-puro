@@ -24,6 +24,14 @@
             
             return null;
         }
+
+        if(!empty($_SESSION["flash"]) && $flash = $_SESSION["flash"]){
+            unset($_SESSION["flash"]);
+            return "<div class=\"message {$flash["type"]}\">{$flash["message"]}</div>";
+        }
+
+        return null;
+
     }
 
 ?>
