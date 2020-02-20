@@ -18,7 +18,7 @@ final class ValidatePathRenderTemplate extends RenderTemplateDecorator
         if (!$path || ($this->file_exists)($path)) {
             return $this->render->renderTemplate($template, $rt ?: null);
         }
-
+        
         throw new Plates\Exception\RenderTemplateException('Template path ' . $path . ' is not a valid path for template: ' . $template->name);
     }
 }

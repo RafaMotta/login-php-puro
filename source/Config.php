@@ -1,7 +1,7 @@
 <?php 
 //SITE CONFIG
     define("SITE", [
-        "name" => "",
+        "name" => "Login PHP puro",
         "desc" => "",
         "domain" => "localauth.com",
         "locale" => "pt_BR",
