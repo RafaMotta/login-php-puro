@@ -10,4 +10,5 @@ class User extends DataLayer
     {
         parent::__construct("users", ["first_name", "last_name", "email", "passwd"]);
     }
+
 }
