@@ -40,7 +40,14 @@ define("SOCIAL",[
 ]);
 
 //MAIL CONNECT
-define("MAIL",[]);
+define("MAIL",[
+    "host" => "smtp.sendgrid.net",
+    "port" => "587",
+    "user" => "apikey",
+    "passwd" => "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",
+    "from_name" => "Rafael Motta",
+    "from_email" => "rafaelmotta.ev@hotmail.com"
+]);
 
 //SOCIAL LOGIN: FACEBOOK
 define("FACEBOOK_LOGIN",[]);

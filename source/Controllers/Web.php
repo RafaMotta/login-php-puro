@@ -2,6 +2,8 @@
 
 namespace Source\Controllers;
 
+use Source\Models\User;
+
 class Web extends Controller
 {
     
@@ -64,8 +66,23 @@ class Web extends Controller
        ]);
     }
 
-    public function reset(): void
+    public function reset($data): void
     {
+        $email = filter_var($data["email"], FILTER_VALIDATE_EMAIL);
+        $forget = filter_var($data["forget"], FILTER_DEFAULT);
+        $errForget = "Não foi possível recuperar, tente novamente!";
+        if(empty($forget)){
+            flash("info", "Informe seu E-MAIL para recuperar a senha");
+            $this->router->redirect("web.forget");
+        }
+
+        if(empty($email) || empty($forget)){
+            flash("Error", $errForget);
+            $this->router->redirect("web.forget");
+        }
+
+        $user = (new User())->find("email = :e AND forget = :f", "e={$email}&f={$forget}")->fetch();
+
         $head = $this->seo->optimize(
             "Crie sua nova senha |" . site("name"),
             site("desc"),

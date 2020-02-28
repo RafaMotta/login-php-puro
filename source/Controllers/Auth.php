@@ -2,6 +2,7 @@
 namespace Source\Controllers;
 
 use Source\Models\User;
+use Source\Support\Email;
 
 class Auth extends Controller 
 {
@@ -71,7 +72,56 @@ class Auth extends Controller
 
     }
 
+    public function forget($data): void
+    {
+        $email = filter_var($data["email"], FILTER_VALIDATE_EMAIL);
+        if(!$email){
+            echo $this->ajaxResponse("message", [
+                "type" => "alert",
+                "message" => "informe o SEU E-MAIL para recuperar a senha"
+            ]);
+            return;
+        }
+
+        $user = (new User())->find("email= :e", "e={$email}")->fetch();
+        if(!$user){
+            echo $this->ajaxResponse("message", [
+                "type" => "error",
+                "message" => "O E-MAIL informado nao é cadastrado!"
+            ]);
+            return;
+        }
+
+        $user->forget = (md5(uniqid(rand(), true)));
+        $user->save();
+
+        $_SESSION["forget"] = $user->id;
+
+        $email = new Email();
+        $email->add(
+            "Recupere sue senha | " . site("name"),
+            $this->view->render("emails/recover", [
+                "user" => $user,
+                "link" => $this->router->route("web.reset", [
+                    "email" => $user->email,
+                    "forget" => $user->forget
+                ])
+            ]),
+            "{$user->first_name} {$user->last_name}",
+            $user->email,
+        )->send();
+
+        flash("success", "Enviamos um link de recuperação para seu email");
+
+        echo $this->ajaxResponse("redirect", [
+            "url" => $this->router->route("web.forget")
+        ]);
+
+    }
+
 }
+
+
 
 
 ?>
