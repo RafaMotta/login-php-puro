@@ -116,7 +116,52 @@ class Auth extends Controller
         echo $this->ajaxResponse("redirect", [
             "url" => $this->router->route("web.forget")
         ]);
+    }
 
+    public function reset($data): void
+    {
+
+        if(empty($_SESSION["forget"]) || !$user = (new User())->findById($_SESSION["forget"])){
+            flash("error", "Não foi possivel recuperar, tente novamente");
+            echo $this->ajaxResponse("redirect", [
+                "url" => $this->router->route("web.forget")
+            ]);
+            return;
+        }
+
+        if(empty($data["password"]) || empty($data["password_re"])){
+            echo $this->ajaxResponse("message", [
+                "type" => "alert",
+                "message" => "Informe e repita sua nova senha!"
+            ]);
+            return;
+        }
+
+        if($data["password"] != $data["password_re"]){
+            echo $this->ajaxResponse("message", [
+                "type" => "error",
+                "message" => "As senhas não conferem!"
+            ]);
+            return;
+        }
+
+        $user->passwd = $data["password"];
+        $user->forget = null;
+
+        if(!$user->save()){
+            echo $this->ajaxResponse("message", [
+                "type" => "error",
+                "message" => $user->fail()->getMessage()
+            ]);
+            return;
+        }
+
+        unset($_SESSION["forget"]);
+        flash("success", "Sua senha foi atualizada com sucesso");
+        echo $this->ajaxResponse("redirect", [
+            "url" => $this->router->route("web.login")
+        ]);
+        
     }
 
 }
