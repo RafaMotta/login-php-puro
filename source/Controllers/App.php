@@ -14,7 +14,7 @@ class App extends Controller
 
         if(empty($_SESSION["user"]) || !$this->user = (new User())->findById($_SESSION["user"])){
             unset($_SESSION["user"]);
-            flash("erro", "Acesso negado!");
+            flash("error", "Acesso negado!");
             $this->router->redirect("web.login");
         }
     }

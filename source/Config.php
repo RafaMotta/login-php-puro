@@ -41,18 +41,27 @@ define("SOCIAL",[
 
 //MAIL CONNECT
 define("MAIL",[
-    "host" => "smtp.sendgrid.net",
-    "port" => "587",
-    "user" => "apikey",
-    "passwd" => "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",
+    "host" => "",
+    "port" => "",
+    "user" => "",
+    "passwd" => "",
     "from_name" => "Rafael Motta",
-    "from_email" => "rafaelmotta.ev@hotmail.com"
+    "from_email" => ""
 ]);
 
 //SOCIAL LOGIN: FACEBOOK
-define("FACEBOOK_LOGIN",[]);
+define("FACEBOOK_LOGIN",[
+    "clientId" => "",
+    "clientSecret" => "",
+    "redirectUri" => SITE["root"] . "/facebook",
+    "graphApiVersion" => "v4.0",
+]);
 
 //SOCIAL LOGIN: GOOGLE
-define("GOOGLE_LOGIN",[]);
+define("GOOGLE_LOGIN",[
+    "clientId" => "",
+    "clientSecret" => "",
+    "redirectUri" =>  SITE["root"] . "/google"
+]);
 
 ?>
